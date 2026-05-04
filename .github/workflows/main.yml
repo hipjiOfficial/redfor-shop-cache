@@ -1,0 +1,23 @@
+name: Refresh Shop Cache
+
+on:
+  workflow_dispatch:
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch latest shop data
+        run: |
+          curl -sf https://api.redfor.org/shop -o shop-data.json
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add shop-data.json
+          git diff --cached --quiet || git commit -m "Refresh shop data $(date -u +%Y-%m-%d)"
+          git push
