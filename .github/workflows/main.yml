@@ -8,11 +8,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Fetch latest shop data
         run: |
-          curl -sf https://api.redfor.org/shop -o shop-data.json
+          curl -sf --max-time 30 --retry 3 --retry-delay 5 https://api.redfor.org/shop -o shop-data.json
+          echo "Fetched:"
+          cat shop-data.json
 
       - name: Commit and push if changed
         run: |
