@@ -23,7 +23,7 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
+          git pull --rebase
           git add shop-data.json
           git diff --cached --quiet || git commit -m "Refresh shop data $(date -u +%Y-%m-%d)"
-          git pull --rebase
           git push
